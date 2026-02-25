@@ -1,4 +1,3 @@
-import React from "react";
 import {
   View,
   FlatList,
@@ -16,12 +15,11 @@ import { useProducts } from "../src/hooks/useProducts";
 
 export default function ProductListScreen() {
   const router = useRouter();
-  const { search, setSearch, filteredProducts, isLoading, isError } =
-    useProducts();
+  const { isLoading, isError, products } = useProducts();
 
   return (
     <View style={styles.container}>
-      <SearchInput value={search} onChange={setSearch} />
+      {/* <SearchInput value={search} onChange={setSearch} /> */}
 
       {isLoading && (
         <ActivityIndicator
@@ -40,7 +38,7 @@ export default function ProductListScreen() {
       {!isLoading && !isError && (
         <View style={styles.listContainer}>
           <FlatList
-            data={filteredProducts}
+            data={products}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <ProductItem
@@ -49,6 +47,13 @@ export default function ProductListScreen() {
                   router.push({ pathname: "/details", params: { id: item.id } })
                 }
               />
+            )}
+            ListEmptyComponent={() => (
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>
+                  No hay productos registrados
+                </Text>
+              </View>
             )}
             showsVerticalScrollIndicator={false}
           />
@@ -69,6 +74,23 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   listContainer: { flex: 1 },
-  centerElement: { flex: 1, justifyContent: "center" },
-  errorText: { flex: 1, textAlign: "center", color: "red", marginTop: 20 },
+  centerElement: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  errorText: {
+    flex: 1,
+    textAlign: "center",
+    color: "red",
+    marginTop: 20,
+  },
+  emptyContainer: {
+    paddingVertical: 50,
+    alignItems: "center",
+  },
+  emptyText: {
+    fontSize: 16,
+    color: "#666",
+    fontWeight: "500",
+  },
 });

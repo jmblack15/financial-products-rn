@@ -5,7 +5,6 @@ import { getProductsFromAPI } from '../services/productService';
 import { Product } from '../types/product.type';
 
 export const useProducts = () => {
-
   const [search, setSearch] = useState('');
 
   const {
@@ -18,15 +17,9 @@ export const useProducts = () => {
     queryFn: getProductsFromAPI,
   });
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(search.toLowerCase()) ||
-    product.id.toString().includes(search)
-  );
 
   return {
-    search,
-    setSearch,
-    filteredProducts,
+    products,
     isLoading,
     isError,
     refetch

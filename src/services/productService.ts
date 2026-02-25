@@ -1,7 +1,11 @@
 import { Product } from '../types/product.type';
 
 
-const API_URL = 'http://192.168.1.67:3002/bp/products';
+const API_URL = 'https://9964-181-135-102-247.ngrok-free.app/bp/products';
+
+interface APIResponse {
+  data: Product[];
+}
 
 export const getProductsFromAPI = async (): Promise<Product[]> => {
   try {
@@ -11,19 +15,13 @@ export const getProductsFromAPI = async (): Promise<Product[]> => {
         'Content-Type': 'application/json',
       },
     });
-
-    console.log("Status Code:", response.status);
-
     if (!response.ok) {
       const errorData = await response.text();
       throw new Error(`Error ${response.status}: ${errorData}`);
     }
-
-    const data = await response.json();
-    console.log("Datos recibidos:", data);
-    return data;
+    const result: APIResponse = await response.json();
+    return result.data || [];
   } catch (error) {
-    console.error("Fallo total en fetch:", error);
     throw error;
   }
 };

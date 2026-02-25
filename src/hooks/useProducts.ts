@@ -1,10 +1,11 @@
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getProductsFromAPI } from '../services/productService';
 import { Product } from '../types/product.type';
 
 export const useProducts = () => {
+
   const [search, setSearch] = useState('');
 
   const {
@@ -17,9 +18,18 @@ export const useProducts = () => {
     queryFn: getProductsFromAPI,
   });
 
+  const filteredProducts = useMemo(() => {
+    if (!search.trim()) return products;
+    return products.filter(product =>
+      product.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [products, search]);
+
 
   return {
-    products,
+    search,
+    setSearch,
+    filteredProducts,
     isLoading,
     isError,
     refetch

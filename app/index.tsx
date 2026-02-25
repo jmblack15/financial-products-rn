@@ -15,11 +15,12 @@ import { useProducts } from "../src/hooks/useProducts";
 
 export default function ProductListScreen() {
   const router = useRouter();
-  const { isLoading, isError, products } = useProducts();
+  const { isLoading, isError, filteredProducts, search, setSearch } =
+    useProducts();
 
   return (
     <View style={styles.container}>
-      {/* <SearchInput value={search} onChange={setSearch} /> */}
+      <SearchInput value={search} onChange={setSearch} />
 
       {isLoading && (
         <ActivityIndicator
@@ -31,14 +32,14 @@ export default function ProductListScreen() {
 
       {isError && (
         <Text style={styles.errorText}>
-          Ocurrió un error al cargar los datos.
+          Ocurrió un error al cargar los datos vuelve a intentarlo mas tarde.
         </Text>
       )}
 
       {!isLoading && !isError && (
         <View style={styles.listContainer}>
           <FlatList
-            data={products}
+            data={filteredProducts}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <ProductItem
@@ -51,7 +52,9 @@ export default function ProductListScreen() {
             ListEmptyComponent={() => (
               <View style={styles.emptyContainer}>
                 <Text style={styles.emptyText}>
-                  No hay productos registrados
+                  {search
+                    ? "No se encontraron coincidencias"
+                    : "No hay productos registrados"}
                 </Text>
               </View>
             )}

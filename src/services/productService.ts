@@ -1,7 +1,7 @@
 import { Product } from '../types/product.type';
 
 
-const API_URL = 'https://9964-181-135-102-247.ngrok-free.app/bp/products';
+const API_URL = 'https://e3aa-181-135-102-247.ngrok-free.app/bp/products';
 
 interface APIResponse {
   data: Product[];
